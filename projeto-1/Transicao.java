@@ -16,4 +16,16 @@ public class Transicao {
                 ", palavra=" + palavra +
                 '}';
     }
+
+    public Estado getEstadoDestino() {
+        return estadoDestino;
+    }
+
+    public Palavra getSimbolo() {
+        return this.palavra;
+    }
+
+    public String getEstadoOrigem() {
+        return this.estadoOrigem.estado;
+    }
 }

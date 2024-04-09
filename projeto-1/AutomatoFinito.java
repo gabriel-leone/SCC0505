@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AutomatoFinito {
     public int numEstados;
@@ -57,6 +58,10 @@ public class AutomatoFinito {
         this.estadoInicial = estado;
     }
 
+    public Estado getEstadoInicial() {
+        return this.estadoInicial;
+    }
+
     public void addEstadoFinal(Estado estado) {
         this.estadoFinais.add(estado);
     }
@@ -71,6 +76,10 @@ public class AutomatoFinito {
 
     public void setNumEstadosFinais(int i) {
         this.numEstadosFinais = i;
+    }
+
+    public List<Estado> getEstadoFinais() {
+        return this.estadoFinais;
     }
 
     public int getNumEstadosFinais() {
@@ -140,5 +149,15 @@ public class AutomatoFinito {
                 "numCadeias=" + numCadeias +
                 ", cadeias=" + cadeias.toString() +
                 '}';
+    }
+
+    public List<Transicao> getTransicao(Estado estadoAtual, String simbolo) {
+        List<Transicao> transicoes = new ArrayList<>();
+        for (Transicao t : this.transicoes) {
+            if (Objects.equals(t.estadoOrigem.estado, estadoAtual.estado) && Objects.equals(t.palavra.palavra, simbolo)) {
+                transicoes.add(t);
+            }
+        }
+        return transicoes;
     }
 }
