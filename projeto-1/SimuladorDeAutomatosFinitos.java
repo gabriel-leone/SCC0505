@@ -6,7 +6,12 @@ public class SimuladorDeAutomatosFinitos {
     public static void main(String[] args) {
         AutomatoFinito automato = new AutomatoFinito();
 
-        try (Scanner myReader = new Scanner(new File("automato.txt"))) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Digite o nome do arquivo contendo as instruções para construção do autômato e as " +
+                "cadeias possíveis: ");
+        String fileName = scanner.nextLine();
+
+        try (Scanner myReader = new Scanner(new File(fileName))) {
             automato.setNumEstados(Integer.parseInt(myReader.nextLine()));
             for (int i = 0; i < automato.getNumEstados(); i++) {
                 automato.addEstadoIfNotExists(i);
@@ -49,9 +54,21 @@ public class SimuladorDeAutomatosFinitos {
 
         Map<String, Boolean> respostas = simular(automato);
 
-        for (Cadeia cadeia : automato.getCadeias()) {
-            System.out.println(cadeia.cadeia + " " + (respostas.get(cadeia.cadeia) ? "aceita" : "rejeita"));
+        String newFileName = fileName.substring(0, fileName.lastIndexOf('.'));
+        String outputFileName = newFileName + ".out";
+        try {
+            File outputFile = new File(outputFileName);
+            outputFile.createNewFile();
+            try (Formatter myWriter = new Formatter(outputFile)) {
+                for (Cadeia cadeia : automato.getCadeias()) {
+                    myWriter.format("%s\n", (respostas.get(cadeia.cadeia) ? "aceita" : "rejeita"));
+                }
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
+
+        System.out.println("Resultados salvos no arquivo " + outputFileName + ".");
     }
 
     public static Map<String, Boolean> simular(AutomatoFinito automato) {
